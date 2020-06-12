@@ -1,0 +1,5 @@
+n=int(input())
+A=list(map(int,input().split()))
+A.sort()
+A_l=len(set(A))
+print(A_l if (n-A_l)%2==0 else A_l-1)
