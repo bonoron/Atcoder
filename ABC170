@@ -1,0 +1,33 @@
+n,q=map(int,input().split())
+AB=[list(map(int,input().split())) for _ in range(n)]
+CD=[list(map(int,input().split())) for _ in range(q)]
+
+add=[0 for _ in range(n+1)]
+park=[[None for _ in range(n+1)] for _ in range(2*10**5+1)]
+big=[0 for _ in range(2*10**5+1)]
+for i,ab in enumerate(AB):
+    a,b=ab
+    park[b][i+1]=a
+    add[i]=b
+
+minimum,biggest=10**9+1,-1
+for i in range(2*10**5+1):
+    big[i]=max(park[i])
+    minimum=min(minimum,big[i])
+    biggest=max(biggest,big[i])
+
+for c,d in CD:
+    park[add[c]][c]=park[d][c]
+    park[add[c]][c]=0
+    big[add[c]]=max(park[add[c]])
+    if big[add[c]]>biggest:
+        biggest=big[add[c]]
+    elif big[add[c]]<minimum:
+        minimum=big[add[c]]
+    big[d]=max(park[d])
+    if big[d]>biggest:
+        biggest=big[d]
+    elif big[d]<minimum:
+        minimum=big[d]
+    add[c]=d
+    print(biggest-minimum)
