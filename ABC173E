@@ -1,0 +1,94 @@
+from collections import deque
+import copy
+mod=10**9+7
+n,k=map(int,input().split())
+K=copy.deepcopy(k)
+A=list(map(int,input().split()))
+
+plus,negative=[],[]
+for i in A:
+    if i>0:plus.append(i)
+    else:negative.append(i)
+
+plus.sort()
+negative.sort()
+
+B,C=[],[]
+N,M=len(plus),len(negative)
+for i in range(0,N,2):
+    if i+1==N:B.append([plus[i],plus[i]])
+    else:B.append([plus[i]*plus[i+1],plus[i],plus[i+1]])
+for i in range(0,M,2):
+    if i+1==M:C.append([negative[i],negative[i]])
+    else:C.append([negative[i]*negative[i+1],negative[i],negative[i+1]])
+
+B.sort(reverse=True)
+C.sort(reverse=True)
+D=copy.deepcopy(B)
+E=copy.deepcopy(C)
+
+B=deque(B)
+C=deque(C)
+
+ans,flag=1,0
+while k!=0:
+    if k==1:
+        if ans>0:
+            if len(B)>0:ans *=B.popleft()[-1]
+            else:ans *=sorted(C.popleft())[0]
+        else:
+            if len(C)>0:ans *=sorted(C.popleft())[0]
+            else:ans *=sorted(B.popleft())[0]
+        if ans<0:flag=1
+        ans %=mod
+        break
+    else:
+        if 0<len(B) and 0<len(C):
+            if B[0][0]<C[0][0]:num=C.popleft()
+            else:num=B.popleft()
+            k -=len(num)-1
+        elif len(B)==0:
+            num=C.popleft()
+            k -=len(num)-1
+        else:
+            num=B.popleft()
+            k -=len(num)-1
+        if ans<0:flag=1
+        ans *=num[0]
+        ans %=mod
+
+if flag:
+    k=K
+    ans=1
+    D.sort()
+    E.sort()
+    D=deque(D)
+    E=deque(E)
+
+    while k!=0:
+        if k==1:
+            if ans>0:
+                if len(E)>0:ans *=sorted(E.popleft())[-2]
+                else:ans *=sorted(D.popleft())[0]
+            else:
+                if len(D)>0:ans *=sorted(D.popleft())[0]
+                else:ans *=sorted(E.popleft())[-2]
+            ans %=mod
+            break
+        else:
+            if 0<len(D) and 0<len(E):
+                if D[0][0]<E[0][0]:
+                    num=D.popleft()
+                else:
+                    num=E.popleft()
+                k -=len(num)-1
+            elif len(D)==0:
+                num=E.popleft()
+                k -=len(num)-1
+            else:
+                num=D.popleft()
+                k -=len(num)-1
+            ans *=num[0]
+            ans %=mod
+    print(ans%mod)
+else:print(ans%mod)
