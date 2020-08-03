@@ -1,0 +1,15 @@
+from math import ceil
+N,K=map(int,input().split())
+A=sorted(list(map(int,input().split())))
+if K==0:print(max(A));exit()
+
+left,right=0,10**9+1
+while right>left+1:
+    cnt=K
+    mid=(left+right)//2
+    for i in range(N):
+        cnt -=ceil(A[i]/mid)-1
+    if cnt>=0:right=mid
+    elif cnt<0:left=mid
+
+print(right)
