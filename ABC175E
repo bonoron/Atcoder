@@ -1,0 +1,26 @@
+import sys
+input=sys.stdin.readline
+
+R,C,K=map(int,input().split())
+rcv=[tuple(map(int,input().split())) for _ in range(K)]
+
+MAP=[[0 for _ in range(C+2)] for _ in range(R+2)]
+DP=[[[0 for _ in range(3)] for _ in range(C+2)] for _ in range(R+2)]
+for r,c,v in rcv:
+    MAP[r-1][c-1]=v
+
+for i in range(R):
+    for j in range(C):
+        for k in range(3):
+            if k==0:
+                DP[i][j][k]=max(DP[i][j-1][k],DP[i-1][j][k]+MAP[i][j],
+                                DP[i-1][j][k+1]+MAP[i][j],
+                                DP[i-1][j][k+2]+MAP[i][j])
+            else:
+                DP[i][j][k]=max(DP[i][j-1][k],DP[i][j-1][k-1]+MAP[i][j])
+
+ans=0
+for i in range(R):
+    for j in range(C):
+        ans=max(ans,max(DP[i][j]))
+print(ans)
