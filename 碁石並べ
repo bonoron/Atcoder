@@ -1,0 +1,21 @@
+n=int(input())
+
+stack,color=[0],None
+cnt=0
+for i in range(n):
+    stone=input()
+    if color==stone:cnt +=1
+    elif i%2==0:
+        stack.append(cnt)
+        color=stone
+        cnt=1
+    else:
+        cnt +=stack.pop()+1 if len(stack)!=0 else 1
+        color=stone
+stack.append(cnt)
+
+ans,num=0,int(color)
+for i,j in enumerate(stack[::-1]):
+    if i%2==num:
+        ans +=j
+print(ans)
