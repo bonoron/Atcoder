@@ -1,0 +1,30 @@
+import sys
+sys.setrecursionlimit(10**6)
+
+
+def DFS(num,pre):
+    global point
+    if color[num]=="white":
+        ans[num]=C.pop()
+        point +=min(ans[num],pre)
+        color[num]="black"
+        for i in T[num]:
+            DFS(i,ans[num])
+
+
+n=int(input())
+AB=[list(map(int,input().split())) for _ in range(n-1)]
+C=sorted(list(map(int,input().split())))
+color=["white" for _ in range(n)]
+
+T=[[] for _ in range(n)]
+for a,b in AB:
+    T[a-1].append(b-1)
+    T[b-1].append(a-1)
+
+ans=[0 for _ in range(n)]
+point=0
+DFS(0,0)
+
+print(point)
+print(*ans)
