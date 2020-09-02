@@ -1,0 +1,9 @@
+from collections import Counter
+n=int(input())
+A=list(input())
+
+ans=0
+A=Counter(A)
+for i,j in A.items():
+    ans +=j%2
+print(ans)
