@@ -1,0 +1,16 @@
+from bisect import bisect_right
+
+n,m,k=map(int,input().split())
+A=[0]+list(map(int,input().split()))
+B=[0]+list(map(int,input().split()))
+
+for i in range(n):A[i+1] +=A[i]
+for i in range(m):B[i+1] +=B[i]
+
+ans=0
+for i in range(n+1):
+    if A[i]>k:continue
+    index=bisect_right(B,k-A[i])-1
+    ans=max(ans,index+i)
+
+print(ans)
